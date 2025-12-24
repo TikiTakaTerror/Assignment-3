@@ -46,7 +46,11 @@
 
 ### c) Run the existing automated tests
 
-- **Run all tests (recommended CI-like mode):** `CI=true ./gradlew test`
+- **Minimal local test run (fast, typically reliable on macOS):** `CI=true ./gradlew :jablib:test`
+  - Success looks like: `BUILD SUCCESSFUL` and a test summary with `0 failed`
+  - Report: `jablib/build/reports/tests/test/index.html`
+
+- **Run all tests (includes JavaFX GUI tests; recommended on Linux/CI):** `CI=true ./gradlew test`
   - Success looks like: `BUILD SUCCESSFUL` and a test summary with `0 failed`
   - Reports:
     - `jablib/build/reports/tests/test/index.html`
@@ -84,10 +88,14 @@
 - **Submodules missing** (common symptom: missing CSL styles/locales or journal abbreviation data):
   - Fix: `git submodule update --init --recursive`
 
-- **Apple Silicon + wrong Java architecture** (common symptom: JavaFX tests fail with `No toolkit found` / `no suitable pipeline found`):
-  - Fix: run Gradle using an **arm64** JDK (so JavaFX natives match):
-    - `JAVA_HOME=$(/usr/libexec/java_home -v 24) CI=true ./gradlew test`
-  - Verify: `./gradlew --version` should show `OS: ... aarch64` on Apple Silicon.
+- **Apple Silicon + wrong Java architecture** (common symptom: `./gradlew run` or GUI tests fail with JavaFX errors like `incompatible architecture`, `No toolkit found`, or `no suitable pipeline found`):
+  - Fix (most common): ensure **Gradle itself** runs on an **arm64** JDK (not an x86_64/Rosetta JDK), then clear the JavaFX cache and re-run.
+    - `./gradlew --stop`
+    - `rm -rf ~/.openjfx/cache`
+    - `export JAVA_HOME=$(/usr/libexec/java_home -v 24 -a arm64)`
+    - `./gradlew --version` (should show `OS: ... aarch64`)
+    - `./gradlew run`
+  - If you do not have a system JDK 24 installed, you can also point `JAVA_HOME` to the Gradle toolchain JDK (path is shown in Gradle output under `.../amazon-corretto-24.jdk/...`).
 
 - **Headless Linux** (common symptom: JavaFX tests fail due to no display):
   - Fix: install Xvfb and run: `CI=true xvfb-run --auto-servernum ./gradlew test`
