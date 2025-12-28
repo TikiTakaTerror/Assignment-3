@@ -15,6 +15,8 @@ import org.jabref.logic.os.OS;
 import com.airhacks.afterburner.injection.Injector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.when;
 /**
  * Test class for the keybindings dialog view model
  */
+@ExtendWith(ApplicationExtension.class)
 class KeyBindingsTabModelTest {
 
     private KeyBindingsTabViewModel model;
@@ -82,7 +85,9 @@ class KeyBindingsTabModelTest {
     @Test
     void randomNewKeyKeyBindingInRepository() {
         setKeyBindingViewModel(KeyBinding.CLEANUP);
-        KeyEvent shortcutKeyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "K", "K", KeyCode.K, true, true, true, false);
+        boolean controlDown = !OS.OS_X;
+        boolean metaDown = OS.OS_X;
+        KeyEvent shortcutKeyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "K", "K", KeyCode.K, true, controlDown, true, metaDown);
         assertFalse(keyBindingRepository.checkKeyCombinationEquality(KeyBinding.CLEANUP, shortcutKeyEvent));
         model.setNewBindingForCurrent(shortcutKeyEvent);
 

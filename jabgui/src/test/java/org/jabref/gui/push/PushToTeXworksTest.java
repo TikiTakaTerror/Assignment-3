@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
 import org.jabref.gui.DialogService;
+import org.jabref.logic.os.OS;
 import org.jabref.logic.push.CitationCommandString;
 import org.jabref.logic.push.PushToApplicationPreferences;
 import org.jabref.model.entry.BibEntry;
@@ -81,7 +82,9 @@ class PushToTeXworksTest {
         ProcessBuilder processBuilder = mock(ProcessBuilder.class);
 
         String testKey = "TestKey";
-        String[] expectedCommand = new String[] {TEXWORKS_CLIENT_PATH, "--insert-text", testKey};
+        String[] expectedCommand = OS.OS_X
+                ? new String[] {"open", "-a", TEXWORKS_CLIENT_PATH, "-n", "--args", "--insert-text", testKey}
+                : new String[] {TEXWORKS_CLIENT_PATH, "--insert-text", testKey};
 
         pushToTeXworks.pushEntries(List.of(new BibEntry().withCitationKey(testKey)), processBuilder);
 
