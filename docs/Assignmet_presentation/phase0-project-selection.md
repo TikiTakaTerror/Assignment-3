@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> This project does not accept fully AI-generated pull requests. AI tools may be used assistively only. You must understand and take responsibility for every change you submit.
+>
+> Read and follow:
+> • [AGENTS.md](./AGENTS.md)
+> • [CONTRIBUTING.md](./CONTRIBUTING.md)
+
 # Phase 0 – Project Selection & Scope Definition
 
 ## Project Overview
@@ -62,6 +69,22 @@ Since JabRef does not provide a formal requirements specification, the following
   Duplicate entries should not be merged automatically without user confirmation, and the user should be able to cancel the operation without affecting the library.
 
 These requirements will be used later to analyze existing tests, guide exploratory testing, and identify potential missing test cases.
+
+---
+
+## Stakeholders and Risks (for testing focus)
+
+**Stakeholders (examples):**
+
+- researchers/students using JabRef daily to manage references
+- maintainers/contributors ensuring stability across platforms
+- users relying on correct exports (BibTeX/BibLaTeX) for papers/theses
+
+**Key risks (examples):**
+
+- incorrect duplicate detection (false positives/negatives) reduces trust and increases manual cleanup
+- wrong merge decisions can cause **data loss** or “silently” change citation metadata
+- privacy concerns when external lookups are enabled (network requests, metadata fetching)
 
 ---
 

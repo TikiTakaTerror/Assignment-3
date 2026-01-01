@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> This project does not accept fully AI-generated pull requests. AI tools may be used assistively only. You must understand and take responsibility for every change you submit.
+>
+> Read and follow:
+> • [AGENTS.md](./AGENTS.md)
+> • [CONTRIBUTING.md](./CONTRIBUTING.md)
+
 # Phase 3 – Exploratory Testing: Duplicate Detection & Merge
 
 ## Goal
@@ -60,13 +67,13 @@ The following exploratory scenarios were executed using the JabRef GUI.
 ## Screenshots and Evidence
 
 Screenshots were collected during exploratory testing and stored in:
-**docs/Assignment_presentation/phase3-screenshots/**
+**docs/Assignmet_presentation/phase3-screenshots/**
 
 ### Screenshot 1 – Duplicate resolver (exact duplicates)
 
 Duplicate detection dialog showing two identical entries and available resolution options.
 
-![Screenshot](phase3-screenshots/1.png)
+![Screenshot](phase3-screenshots/01-duplicate-resolver-exact.png)
 
 ---
 
@@ -74,7 +81,7 @@ Duplicate detection dialog showing two identical entries and available resolutio
 
 Field-by-field merge dialog highlighting conflicting metadata between two entries.
 
-![Screenshot](phase3-screenshots/2.png)
+![Screenshot](phase3-screenshots/02-merge-dialog-conflicts.png)
 
 ---
 
@@ -84,7 +91,7 @@ When canceling the merge operation in the duplicate resolver, JabRef aborts manu
 
 This behavior was observed consistently during exploratory testing and highlights that canceling does not fully preserve the original duplicate entries.
 
-![Screenshot](phase3-screenshots/3.png)
+![Screenshot](phase3-screenshots/03-cancel-merge-behavior.png)
 
 ---
 
@@ -92,7 +99,7 @@ This behavior was observed consistently during exploratory testing and highlight
 
 Merge option disabled when more than two entries are selected, preventing unsafe operations.
 
-![Screenshot](phase3-screenshots/4.png)
+![Screenshot](phase3-screenshots/04-invalid-merge-selection.png)
 
 ---
 
@@ -100,7 +107,7 @@ Merge option disabled when more than two entries are selected, preventing unsafe
 
 Result of resolving duplicates using the *Keep both* option, where both entries remain in the library.
 
-![Screenshot](phase3-screenshots/5.png)
+![Screenshot](phase3-screenshots/05-keep-both.png)
 
 ---
 
