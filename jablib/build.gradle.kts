@@ -4,6 +4,7 @@ import dev.jbang.gradle.tasks.JBangTask
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.testing.jacoco.tasks.JacocoReport
 import java.net.URI
 import java.util.*
 
@@ -24,6 +25,7 @@ plugins {
 
     id("net.ltgt.errorprone") version "4.3.0"
     id("net.ltgt.nullaway") version "2.3.0"
+    id("jacoco")
 }
 
 var version: String = project.findProperty("projVersion")?.toString() ?: "0.1.0"
@@ -237,11 +239,9 @@ dependencies {
     errorprone("com.google.errorprone:error_prone_core")
     errorprone("com.uber.nullaway:nullaway")
 }
-/*
 jacoco {
     toolVersion = "0.8.13"
 }
- */
 
 tasks.generateGrammarSource {
     maxHeapSize = "64m"
@@ -491,28 +491,34 @@ tasks.register<Test>("databaseTest") {
     maxParallelForks = 1
 }
 
-/*
-tasks.register('jacocoPrepare') {
+tasks.register("jacocoPrepare") {
     doFirst {
         // Ignore failures of tests
-        tasks.withType(Test).tap {
-            configureEach {
-                ignoreFailures = true
-            }
+        tasks.withType<Test>().configureEach {
+            ignoreFailures = true
         }
     }
 }
-test.mustRunAfter jacocoPrepare
-databaseTest.mustRunAfter jacocoPrepare
-fetcherTest.mustRunAfter jacocoPrepare
+tasks.named<Test>("test") {
+    mustRunAfter("jacocoPrepare")
+}
+tasks.named<Test>("databaseTest") {
+    mustRunAfter("jacocoPrepare")
+}
+tasks.named<Test>("fetcherTest") {
+    mustRunAfter("jacocoPrepare")
+}
 
-jacocoTestReport {
-    dependsOn jacocoPrepare, test, fetcherTest, databaseTest
+tasks.named<JacocoReport>("jacocoTestReport") {
+    dependsOn("jacocoPrepare", "test", "fetcherTest", "databaseTest")
 
-    executionData files(
-            layout.buildDirectory.file('jacoco/test.exec').get().asFile,
-            layout.buildDirectory.file('jacoco/fetcherTest.exec').get().asFile,
-            layout.buildDirectory.file('jacoco/databaseTest.exec').get().asFile)
+    executionData(
+        files(
+            layout.buildDirectory.file("jacoco/test.exec").get().asFile,
+            layout.buildDirectory.file("jacoco/fetcherTest.exec").get().asFile,
+            layout.buildDirectory.file("jacoco/databaseTest.exec").get().asFile
+        )
+    )
 
     reports {
         csv.required = true
@@ -521,7 +527,6 @@ jacocoTestReport {
         xml.required = true
     }
 }
-*/
 
 mavenPublishing {
   configure(JavaLibrary(
